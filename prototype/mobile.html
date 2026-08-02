@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weeldrop OS — Mobile Prototype</title>
+<meta name="description" content="Interactive mobile prototype for Weeldrop Petroleum &amp; Logistics: station manager, owner, tanker driver and bulk customer apps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/proto.css?v=3">
+<style>
+  .protohead{display:flex;align-items:center;gap:14px;padding:14px 22px;
+    border-bottom:1px solid var(--line-soft);background:var(--shell);
+    position:sticky;top:0;z-index:50;flex-wrap:wrap}
+  /* two type steps in this bar, 20 / 12 — the logo glyph inherits the body size */
+  .protohead .mark{width:34px;height:34px;border-radius:9px;background:var(--brand);
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
+  .protohead h1{font-size:20px;letter-spacing:-.01em}
+  .protohead .sub{font-size:12px;color:var(--fg-faint)}
+  .stage{display:grid;grid-template-columns:300px 1fr;gap:26px;padding:24px;
+    max-width:1180px;margin:0 auto;align-items:start}
+  .panel{position:sticky;top:86px}
+  #ctx .listrow{width:100%;text-align:left}
+  .stagewrap{display:flex;justify-content:center;padding-bottom:40px}
+  @media(max-width:940px){
+    .stage{grid-template-columns:1fr;gap:18px}
+    .panel{position:static;order:2}
+    .phone{transform:scale(.92);transform-origin:top center}
+  }
+  @media(max-width:430px){ .phone{width:100%;height:760px;border-radius:28px;border-width:7px} }
+</style>
+</head>
+<body>
+
+<div class="protohead">
+  <div class="mark">W</div>
+  <div class="grow">
+    <h1>Weeldrop OS · Mobile prototype</h1>
+    <div class="sub">Four role apps · tap anything · figures recompute live</div>
+  </div>
+  <div class="chipbar" id="rolebar"></div>
+  <a class="btn ghost sm" href="index.html">← Prototype home</a>
+  <a class="btn ghost sm" href="web.html">Web console →</a>
+</div>
+
+<div class="stage">
+  <aside class="panel">
+    <div class="card" id="ctx"></div>
+    <div style="height:12px"></div>
+    <div class="note">
+      This is a clickable prototype, not a build. Data is fictional but internally
+      consistent — every derived figure is computed from the raw readings on screen.
+    </div>
+  </aside>
+
+  <div class="stagewrap">
+    <div class="phone">
+      <div class="notch"></div>
+      <div id="phone-body" style="display:flex;flex-direction:column;height:100%"></div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/data.js?v=3"></script>
+<script src="assets/mobile.js?v=3"></script>
+</body>
+</html>

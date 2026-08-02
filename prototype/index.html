@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weeldrop OS — Interactive Prototype</title>
+<meta name="description" content="Clickable prototype for Weeldrop Petroleum &amp; Logistics: station accountability and bulk supply / haulage in one system. Mobile apps for manager, owner, driver and bulk customer, plus a web console.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/proto.css?v=3">
+<style>
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  header.hero{background:
+      radial-gradient(1000px 420px at 12% -8%, rgba(22,163,74,.20), transparent 62%),
+      linear-gradient(168deg,#0a1420,#050b12 62%);
+    border-bottom:1px solid var(--line-soft);padding:64px 0 52px}
+  .hero .mark{width:44px;height:44px;border-radius:12px;background:var(--brand);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;color:#fff}
+  .hero h1{font-size:clamp(30px,5vw,50px);letter-spacing:-.02em;margin-top:22px;max-width:19ch}
+  .hero p.sub{font-size:18px;color:var(--fg-dim);max-width:66ch;margin-top:16px}
+  .hero .cta-row{display:flex;gap:11px;flex-wrap:wrap;margin-top:30px}
+  section{padding:54px 0}
+  section+section{border-top:1px solid var(--line-soft)}
+  h2{font-size:clamp(22px,3.2vw,30px);letter-spacing:-.01em}
+  .lede{color:var(--fg-dim);max-width:70ch;margin-top:10px;font-size:16.5px}
+  h3.blk{font-size:18px;margin-bottom:10px}
+  .surface{display:block;background:var(--panel);border:1px solid var(--line-soft);
+    border-radius:16px;padding:22px;color:inherit;text-decoration:none;transition:transform .16s,border-color .16s}
+  .surface:hover{transform:translateY(-3px);border-color:var(--brand-400);text-decoration:none}
+  .surface .big{font-family:'Exo',sans-serif;font-size:21px;font-weight:700;margin:12px 0 6px}
+  .spine{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .spine .node{background:var(--panel-2);border:1px solid var(--line-soft);border-radius:10px;
+    padding:11px;text-align:center;font-size:12.5px}
+  .spine .node b{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;
+    color:var(--brand-300);margin-bottom:3px;letter-spacing:.05em}
+  ul.tick{list-style:none;margin:0}
+  ul.tick li{padding:6px 0 6px 24px;position:relative;font-size:14.5px;color:var(--fg-dim)}
+  ul.tick li::before{content:'▸';position:absolute;left:4px;color:var(--brand-400)}
+  footer{border-top:1px solid var(--line-soft);padding:34px 0 60px;color:var(--fg-faint);font-size:13px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="row">
+      <div class="mark">W</div>
+      <div><div class="kicker">Interactive prototype · 3 August 2026</div>
+        <div class="sm muted">Weeldrop Petroleum &amp; Logistics · Ibadan</div></div>
+    </div>
+    <h1>Weeldrop OS</h1>
+    <p class="sub">One system, two front doors. It closes the leaks across ten filling stations
+      <em>and</em> turns the tanker fleet and bulk trade into a product customers can order from.
+      At Weeldrop those are the same litres, moving through the same trucks, against the same
+      landed cost.</p>
+    <div class="cta-row">
+      <a class="btn" href="mobile.html">Open the mobile prototype →</a>
+      <a class="btn ghost" href="web.html">Open the web console →</a>
+      <a class="btn ghost" href="https://github.com/mosesdex/filling-station-management-research/blob/main/docs/07-weeldrop-app-options.md">Read the proposal</a>
+    </div>
+    <div class="grid g4" style="margin-top:34px">
+      <div class="kpi"><div class="l">Screens</div><div class="n">39</div>
+        <div class="d">27 mobile · 12 console</div></div>
+      <div class="kpi"><div class="l">Role apps</div><div class="n">4</div>
+        <div class="d">manager · owner · driver · customer</div></div>
+      <div class="kpi"><div class="l">Stations modelled</div><div class="n">10</div>
+        <div class="d">real Weeldrop sites, demo figures</div></div>
+      <div class="kpi"><div class="l">Figures typed</div><div class="n">0</div>
+        <div class="d">every derived number is computed</div></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">The two halves</div>
+    <h2>Idea 1 and Idea 2, built as one product</h2>
+    <p class="lede">The proposal put two options on the table. This prototype merges them, because
+      they share a spine: a delivery in the station app <em>is</em> a completed trip in the supply
+      platform, and a station’s days-of-stock is exactly the input the allocation engine needs.</p>
+
+    <div class="grid g2" style="margin-top:26px">
+      <div class="card">
+        <span class="badge ok">Idea 1 · protects margin</span>
+        <h3 class="blk" style="margin-top:12px">Station accountability</h3>
+        <ul class="tick">
+          <li>Daily report in under 3 minutes, offline-tolerant</li>
+          <li>Meters, dips, delivery, takings split, expenses, photo evidence</li>
+          <li>Server computes litres, expected cash, shortage, tank variance</li>
+          <li>Per-tank variance trend alerts (the theft detector)</li>
+          <li>Attendant shortage league across all ten stations</li>
+          <li>Price broadcast with acknowledgement, compliance calendar, CNG module</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="badge info">Idea 2 · grows revenue</span>
+        <h3 class="blk" style="margin-top:12px">Bulk supply &amp; haulage</h3>
+        <ul class="tick">
+          <li>Customer ordering portal with contract pricing and live truck tracking</li>
+          <li>Per-compartment chain of custody: seals at load, dips at discharge</li>
+          <li>Telematics integrated, not built: deviation, idling and fuel-level feeds</li>
+          <li>Trip P&amp;L, credit limits and ageing, proof of delivery, invoicing</li>
+          <li>Allocation engine splitting each inbound load: retail vs bulk</li>
+          <li>Fleet card honoured at Weeldrop’s own ten stations, so no acceptance risk</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="height:22px"></div>
+    <div class="card">
+      <div class="card-h"><h3 class="blk">The shared spine</h3>
+        <span class="tiny faint">one schema, two front doors</span></div>
+      <div class="spine">
+        <div class="node"><b>ORG</b>Weeldrop</div>
+        <div class="node"><b>STATIONS</b>10 sites · tanks · nozzles</div>
+        <div class="node"><b>PRODUCTS</b>PMS · AGO · DPK · CNG</div>
+        <div class="node"><b>DELIVERIES</b>waybill · compartments · dips</div>
+        <div class="node"><b>TRIPS</b>truck · driver · seals · route</div>
+        <div class="node"><b>ORDERS</b>bulk customers · credit</div>
+        <div class="node"><b>RECORDS</b>append-only · photo · GPS</div>
+      </div>
+      <div class="anno">Building both on this spine costs roughly 20% more than the station app
+        alone. Retrofitting the supply platform onto a foreign schema later costs a rewrite.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Open the prototype</div>
+    <h2>Two surfaces</h2>
+    <div class="grid g2" style="margin-top:24px">
+      <a class="surface" href="mobile.html">
+        <span class="badge neutral">27 screens · 4 roles</span>
+        <div class="big">Mobile prototype →</div>
+        <p class="sm muted">Switch persona at the top. The station manager’s 7-step daily report
+          recomputes litres, expected takings and tank variance as you type. Submit it and watch the
+          offline queue drain. Then look at the same day through the owner’s eyes.</p>
+        <div class="sep"></div>
+        <div class="tiny faint mono">MANAGER · OWNER · DRIVER · BULK CUSTOMER</div>
+      </a>
+      <a class="surface" href="web.html">
+        <span class="badge neutral">12 pages</span>
+        <div class="big">Web console →</div>
+        <p class="sm muted">The desk view: all ten stations, per-tank variance against each tank’s
+          own baseline, dispatch and chain of custody, the bulk order book, receivables ageing, the
+          allocation engine, compliance, CNG and the audit trail.</p>
+        <div class="sep"></div>
+        <div class="tiny faint mono">OWNER · DISPATCHER · ACCOUNTANT</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Follow this path</div>
+    <h2>The five-minute demo</h2>
+    <p class="lede">Every number below is live in the prototype. Nothing is a static image.</p>
+    <div class="grid g2" style="margin-top:24px">
+      <div class="card">
+        <div class="timeline">
+          <div class="tl-item done"><div class="t">1 · Manager submits, offline</div>
+            <div class="s">Mobile → Station Manager → “Submit today’s figures”. Edit a closing meter
+              and watch litres sold recompute. Step through dips, delivery, takings, photos.</div></div>
+          <div class="tl-item done"><div class="t">2 · The queue drains</div>
+            <div class="s">Submit with no signal. The report is saved on the phone, then uploads
+              itself when the network returns.</div></div>
+          <div class="tl-item done"><div class="t">3 · Owner opens the app at 9pm</div>
+            <div class="s">Mobile → Owner. Nine stations green, Bodija red, Jembewon and Nihort amber.</div></div>
+          <div class="tl-item done"><div class="t">4 · Drill into Bodija</div>
+            <div class="s">Tank 2 variance has drifted for nine days against its own baseline.
+              Open the dip photo. Order a surprise dip. Call the manager.</div></div>
+          <div class="tl-item now"><div class="t">5 · Swipe to the fleet</div>
+            <div class="s">WD-04 has been stationary 41 minutes, 3.2 km off the approved corridor,
+              carrying 30,000 L of someone’s diesel.</div></div>
+        </div>
+      </div>
+      <div class="col" style="gap:14px">
+        <div class="card">
+          <h3 class="blk">What the demo proves</h3>
+          <ul class="tick">
+            <li>The manager types raw readings only; no derived figure is trusted from a device</li>
+            <li>A shortage and a variance trend are two different signals, caught two different ways</li>
+            <li>Offline is the normal case, not an error state</li>
+            <li>The owner gets exceptions, not a feed: nine normal stations stay silent</li>
+            <li>Retail and haulage sit in one app because they are one business</li>
+          </ul>
+        </div>
+        <div class="note">
+          <b>Fictional data, real structure.</b> Station names, products and the Ibadan geography are
+          the client’s. Volumes, cash, staff names, customers and trips are invented for the demo,
+          but they reconcile: takings are derived from litres × price, so every figure ties out.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Scope</div>
+    <h2>What ships when</h2>
+    <div class="grid g3" style="margin-top:24px">
+      <div class="card">
+        <div class="card-h"><h3 class="blk">Phase 1 · 4–6 weeks</h3><span class="badge ok">MVP</span></div>
+        <ul class="tick">
+          <li>Daily submission + offline queue</li>
+          <li>Server-side reconciliation</li>
+          <li>Owner dashboard, 10 stations</li>
+          <li>Nightly digest &amp; missing-report nags</li>
+          <li>Price broadcast, roles, audit trail</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3 class="blk">Phase 2 · 4–6 weeks</h3><span class="badge info">Controls + fleet</span></div>
+        <ul class="tick">
+          <li>Shift-level entry, attendant league</li>
+          <li>Delivery verification workflow</li>
+          <li>Fleet register, trip dispatch, driver app</li>
+          <li>Chain of custody with seals and dips</li>
+          <li>Compliance calendar and exports</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3 class="blk">Phase 3 · ongoing</h3><span class="badge neutral">The moat</span></div>
+        <ul class="tick">
+          <li>Customer portal and live tracking</li>
+          <li>Credit, invoicing, fleet card</li>
+          <li>Telematics integration, trip P&amp;L</li>
+          <li>Allocation engine</li>
+          <li>CNG operations, from Q4 2026</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="height:22px"></div>
+    <div class="grid g2">
+      <div class="card">
+        <h3 class="blk">Stack</h3>
+        <div class="kv"><span class="k">Mobile</span><span class="v" style="font-size:12.5px">Expo / React Native</span></div>
+        <div class="kv"><span class="k">Backend</span><span class="v" style="font-size:12.5px">Supabase · Postgres + RLS</span></div>
+        <div class="kv"><span class="k">Offline</span><span class="v" style="font-size:12.5px">SQLite write-ahead queue, idempotency keys</span></div>
+        <div class="kv"><span class="k">Jobs</span><span class="v" style="font-size:12.5px">pg_cron + Edge Functions</span></div>
+        <div class="kv"><span class="k">Geo</span><span class="v" style="font-size:12.5px">PostGIS for corridors and geofences</span></div>
+        <div class="kv"><span class="k">Portal</span><span class="v" style="font-size:12.5px">Next.js (B2B buyers order from desktops)</span></div>
+        <div class="kv"><span class="k">Telematics</span><span class="v" style="font-size:12.5px">adapter layer over existing Nigerian vendors</span></div>
+      </div>
+      <div class="card">
+        <h3 class="blk">Open questions for the client</h3>
+        <ul class="tick">
+          <li>How are the ten stations reported today, and who compiles it?</li>
+          <li>How many tankers, and are any already GPS-tracked? Which vendor?</li>
+          <li>Revenue split: retail vs bulk vs haulage-for-hire?</li>
+          <li>How much bulk trade is on credit, and what is outstanding?</li>
+          <li>CNG: own-build or partnership, and who operates the sites?</li>
+          <li>Internal tooling only, or a product to sell to other marketers?</li>
+        </ul>
+        <div class="anno">One correction worth making regardless: the website still says
+          “DPR-licensed”. DPR was dissolved under the PIA 2021; the downstream regulator is NMDPRA.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row between wrap" style="gap:14px">
+    <div>Weeldrop OS — prototype only. Not a production system; no real client data.</div>
+    <div class="row" style="gap:14px">
+      <a href="../index.html">Research site</a>
+      <a href="mobile.html">Mobile</a>
+      <a href="web.html">Console</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/data.js?v=3"></script>
+</body>
+</html>

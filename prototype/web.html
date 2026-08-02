@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weeldrop OS — Web Console Prototype</title>
+<meta name="description" content="Desktop console prototype for Weeldrop Petroleum &amp; Logistics: station accountability, wet-stock variance, dispatch, bulk orders, credit and CNG.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/proto.css?v=3">
+<style>
+  @media(max-width:860px){
+    .console{grid-template-columns:1fr}
+    .side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;
+      border-right:0;border-bottom:1px solid var(--line-soft)}
+    .side .brand,.side .grp{width:100%}
+    .side .nav{flex:0 0 auto}
+    .page{padding:16px 14px 50px}
+    .topbar{padding:12px 14px;flex-wrap:wrap}
+  }
+</style>
+</head>
+<body>
+
+<div class="console">
+  <aside class="side" id="side"></aside>
+  <main class="main">
+    <div class="topbar" id="topbar"></div>
+    <div class="page" id="page"></div>
+  </main>
+</div>
+<div id="modal-root"></div>
+
+<script src="assets/data.js?v=3"></script>
+<script src="assets/web.js?v=3"></script>
+</body>
+</html>
