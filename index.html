@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Filling Station Management App — Deep Research (Nigeria)</title>
+<meta name="description" content="Deep research: how Nigerian filling stations operate, fraud controls, competitor software, and the blueprint for a multi-station owner/manager mobile app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0F172A; --on-primary:#FFFFFF; --secondary:#334155; --accent:#0369A1;
+  --bg:#F8FAFC; --fg:#020617; --muted:#E8ECF1; --border:#E2E8F0; --danger:#DC2626;
+  --ok:#047857; --warn:#B45309; --card:#FFFFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.65;font-size:16px}
+h1,h2,h3,h4{font-family:'Exo',sans-serif;line-height:1.25;color:var(--primary)}
+.mono{font-family:'IBM Plex Mono',monospace}
+a{color:var(--accent)}
+a:hover{text-decoration-thickness:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* Nav */
+nav{position:sticky;top:0;z-index:100;background:rgba(15,23,42,.97);backdrop-filter:blur(6px);color:#fff}
+nav .wrap{display:flex;align-items:center;gap:8px;height:56px;overflow-x:auto;white-space:nowrap}
+nav .brand{font-family:'Exo',sans-serif;font-weight:700;font-size:15px;color:#fff;text-decoration:none;margin-right:8px}
+nav a.item{color:#CBD5E1;text-decoration:none;font-size:13.5px;padding:6px 10px;border-radius:6px;transition:background .2s,color .2s;cursor:pointer}
+nav a.item:hover{background:#1E293B;color:#fff}
+
+/* Hero */
+header{background:linear-gradient(160deg,#0F172A 0%,#1E3A5F 100%);color:#fff;padding:72px 0 56px}
+header .kicker{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#7DD3FC;margin-bottom:16px}
+header h1{color:#fff;font-size:clamp(30px,5vw,46px);max-width:20ch}
+header p.sub{margin-top:18px;font-size:18px;color:#CBD5E1;max-width:64ch}
+header .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px}
+header .chip{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:6px 14px;color:#E2E8F0}
+header .cta{display:inline-block;margin-top:30px;background:#0369A1;color:#fff;text-decoration:none;font-weight:600;padding:12px 22px;border-radius:8px;transition:background .2s}
+header .cta:hover{background:#075985}
+header .cta.ghost{background:transparent;border:1px solid rgba(255,255,255,.35);margin-left:10px}
+header .cta.ghost:hover{background:rgba(255,255,255,.08)}
+
+/* Stat band */
+.stats{background:var(--primary);color:#fff;padding:34px 0 40px;border-top:1px solid #1E293B}
+.stats .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px}
+.stat .n{font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:700;color:#7DD3FC}
+.stat .l{font-size:13.5px;color:#94A3B8;margin-top:4px}
+
+/* Sections */
+section{padding:58px 0 8px}
+.sec-kicker{font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+section>.wrap>h2{font-size:clamp(24px,3.5vw,32px);margin-bottom:8px;scroll-margin-top:80px}
+.lede{font-size:17.5px;color:var(--secondary);max-width:72ch;margin-bottom:28px}
+h3{font-size:20px;margin:34px 0 12px}
+h4{font-size:16.5px;margin:22px 0 8px}
+p{margin-bottom:14px;max-width:76ch}
+ul,ol{margin:0 0 16px 22px;max-width:74ch}
+li{margin-bottom:7px}
+strong{color:var(--primary)}
+
+/* Cards & callouts */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:22px 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px;box-shadow:0 1px 3px rgba(2,6,23,.05)}
+.card h4{margin-top:0}
+.callout{border:1px solid #BFDBFE;background:#EFF6FF;border-radius:10px;padding:16px 20px;margin:20px 0;max-width:80ch}
+.callout.red{border-color:#FECACA;background:#FEF2F2}
+.callout.green{border-color:#A7F3D0;background:#ECFDF5}
+.callout.amber{border-color:#FDE68A;background:#FFFBEB}
+.callout p:last-child{margin-bottom:0}
+.formula{font-family:'IBM Plex Mono',monospace;font-size:14px;background:#0F172A;color:#E2E8F0;border-radius:10px;padding:18px 22px;margin:18px 0;overflow-x:auto;line-height:1.9}
+.formula b{color:#7DD3FC;font-weight:500}
+
+/* Tables */
+.tbl{overflow-x:auto;margin:20px 0;border:1px solid var(--border);border-radius:12px;background:#fff}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}
+th{background:var(--muted);text-align:left;font-family:'Exo',sans-serif;font-weight:600;color:var(--primary);padding:11px 14px;border-bottom:1px solid var(--border)}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.mono,th.mono{font-family:'IBM Plex Mono',monospace;font-size:13.5px}
+.tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:500;border-radius:999px;padding:2px 10px;white-space:nowrap}
+.tag.owner{background:#FEE2E2;color:#991B1B}
+.tag.cust{background:#E0F2FE;color:#075985}
+.tag.yes{background:#D1FAE5;color:#065F46}
+.tag.no{background:#F1F5F9;color:#64748B}
+.tag.part{background:#FEF3C7;color:#92400E}
+
+/* Misc */
+.divider{border:none;border-top:1px solid var(--border);margin:48px auto 0;max-width:1080px}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:22px 0}
+.src{font-size:13px;color:#64748B}
+footer{background:var(--primary);color:#94A3B8;padding:44px 0;margin-top:70px;font-size:14px}
+footer a{color:#7DD3FC}
+.flag{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--warn);font-weight:500}
+.pill-row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 20px}
+.pill{font-size:13px;background:#fff;border:1px solid var(--border);border-radius:999px;padding:5px 14px;color:var(--secondary)}
+.num{font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--accent)}
+blockquote{border:1px solid var(--border);padding:16px 22px;background:#fff;border-radius:12px;margin:20px 0;font-size:17px;max-width:78ch;box-shadow:0 1px 3px rgba(2,6,23,.05)}
+</style>
+</head>
+<body>
+
+<nav aria-label="Sections">
+  <div class="wrap">
+    <a class="brand" href="#top">Station Research</a>
+    <a class="item" href="#summary">Summary</a>
+    <a class="item" href="#industry">Industry</a>
+    <a class="item" href="#operations">Operations</a>
+    <a class="item" href="#fraud">Fraud &amp; Controls</a>
+    <a class="item" href="#competitors">Competitors</a>
+    <a class="item" href="#blueprint">App Blueprint</a>
+    <a class="item" href="#risks">Risks &amp; Questions</a>
+    <a class="item" href="#sources">Sources</a>
+  </div>
+</nav>
+
+<header id="top">
+  <div class="wrap">
+    <div class="kicker">Deep Research · Nigeria · August 2026</div>
+    <h1>Filling Station Management: Research &amp; App Blueprint</h1>
+    <p class="sub">How Nigerian filling stations really operate, where the money leaks, what competing software exists — and the evidence-based blueprint for a mobile app where station managers submit daily figures and the owner monitors every station from his phone.</p>
+    <div class="meta">
+      <span class="chip">5 research tracks</span>
+      <span class="chip">45+ cited sources</span>
+      <span class="chip">Official gazettes · national press · practitioner forums</span>
+    </div>
+    <div>
+      <a class="cta" href="#blueprint">Jump to the App Blueprint</a>
+      <a class="cta ghost" href="https://github.com/mosesdex/filling-station-management-research">View on GitHub</a>
+    </div>
+  </div>
+</header>
+
+<div class="stats" aria-label="Key numbers">
+  <div class="wrap grid">
+    <div class="stat"><div class="n">₦739–1,250+</div><div class="l">Petrol pump-price band per litre, 2025–26 — cost now changes per truckload</div></div>
+    <div class="stat"><div class="n">~31,220</div><div class="l">Retail stations in Nigeria; independents run ~60% (est.)</div></div>
+    <div class="stat"><div class="n">₦500m</div><div class="l">Alleged sales diversion by one station manager (EFCC case, 2025)</div></div>
+    <div class="stat"><div class="n">18 → 89</div><div class="l">Stations one Nigerian owner scaled to after automating remote monitoring</div></div>
+    <div class="stat"><div class="n">238</div><div class="l">Telco network outages in January 2026 alone — offline-first is mandatory</div></div>
+  </div>
+</div>
+
+<!-- ============ EXECUTIVE SUMMARY ============ -->
+<section id="summary">
+  <div class="wrap">
+    <div class="sec-kicker">00 · Executive Summary</div>
+    <h2>The opportunity in one page</h2>
+    <p class="lede">Nigeria's downstream fuel market changed completely between 2023 and 2026. Subsidy removal (May 2023) and the Dangote refinery (petrol from September 2024) turned station ownership from a fixed-margin licence business into a volatile trading business. An owner's biggest risks are now <strong>(1) not knowing his real daily numbers fast enough</strong>, and <strong>(2) internal leakage</strong> — attendant tricks, cash skimming, short deliveries, and manager-level diversion.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h4>The industry already has the ritual</h4>
+        <p>Every serious station reconciles two physical measurements daily: <strong>pump totalizer (meter) readings</strong> and <strong>tank dip readings</strong>, checked against cash + POS + transfer takings. The math is standard and fully computable. Today it lives on paper — which is exactly why fraud survives.</p>
+      </div>
+      <div class="card">
+        <h4>Automation is how owners scale</h4>
+        <p>Nigerian evidence: one operator grew from <span class="num">18 to 89</span> stations after automating; another reclaimed leased-out stations and grew <span class="num">73 → 176</span>. Remote visibility is what lets an owner manage more stations than he can personally stand in.</p>
+      </div>
+      <div class="card">
+        <h4>The market gap is real</h4>
+        <p>The competitive landscape is <strong>barbell-shaped</strong>: hardware-heavy enterprise systems (Epump, Smartflow, RockEye) on one end; generic single-phone ledger apps on the other. <strong>The middle — software-only, offline-first, daily-figures reporting with an owner dashboard — is nearly empty.</strong></p>
+      </div>
+    </div>
+
+    <blockquote><strong>"Epump-grade visibility without the hardware."</strong> Managers submit meter readings, dip readings, and the cash/POS/transfer count in under 3 minutes — even offline. The owner opens his phone at 9pm and sees every station's litres sold, expected vs actual cash, and tank variance, with alerts when anything drifts.</blockquote>
+
+    <h3>Ten key findings</h3>
+    <ol>
+      <li><strong>Daily reconciliation is the product.</strong> The core loop — per-attendant meter reconciliation, per-tank dip-vs-book variance, payment split — is documented Nigerian audit practice. The app digitizes an existing ritual; it does not have to teach a new one.</li>
+      <li><strong>Variance trend analysis catches theft and leaks.</strong> Track each tank's cumulative % variance against its own "normal"; alert on trend breaks, not single-day noise.</li>
+      <li><strong>Fraud is well-documented and specific.</strong> A sourced inventory of attendant tricks, manager-level diversion (EFCC/NSCDC cases), and short deliveries — each maps to a concrete app control.</li>
+      <li><strong>Delivery verification is a first-class workflow</strong> — waybill vs per-compartment discharge vs before/after dips. This exact control would have caught a documented 26,700-litre diversion.</li>
+      <li><strong>Under-dispensing is regulatory survival.</strong> NMDPRA seals stations outright — 11 sealed in Rivers State in one day (Feb 2026).</li>
+      <li><strong>Offline-first is non-negotiable.</strong> 238 telco outages in January 2026; POS terminals halt when towers drop. Submissions must queue locally and sync later.</li>
+      <li><strong>Payments are a three-way split.</strong> Cash 33.6% / card 27.3% / transfer 13.6% at stations; 91% of stations run POS. The daily form captures the split natively.</li>
+      <li><strong>Data integrity beats data entry.</strong> Append-only records, camera-only photo evidence, GPS + server timestamps, and server-side computation of every derived number.</li>
+      <li><strong>No Nigerian competitor publishes pricing, and none is software-only.</strong> Transparent per-station Naira pricing with a free tier would be unique.</li>
+      <li><strong>Recommended stack:</strong> Expo/React Native + Supabase — row-level security for roles, pg_cron digests, local SQLite write-queue for offline.</li>
+    </ol>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ============ INDUSTRY ============ -->
+<section id="industry">
+  <div class="wrap">
+    <div class="sec-kicker">01 · Industry Context</div>
+    <h2>Nigeria's downstream fuel market, 2023–2026</h2>
+    <p class="lede">The regulatory and market environment that shapes what a station owner needs from software.</p>
+
+    <h3>The regulator: NMDPRA</h3>
+    <p>The <strong>Nigerian Midstream and Downstream Petroleum Regulatory Authority</strong> (created by the Petroleum Industry Act 2021, s.29) is the sole licensing, safety, and market-conduct regulator for retail stations. Operating without a licence is a criminal offence (PIA s.125). Licensing runs on the CELPS/ROMS e-portals through a staged chain: <strong>Licence to Establish → Licence to Construct → Licence to Operate</strong> (renewable), with siting, EIA, tank-integrity, and physical-standard requirements at each stage.</p>
+
+    <div class="tbl"><table>
+      <caption style="text-align:left;padding:10px 14px;font-weight:600;font-family:'Exo',sans-serif">Official fees — Midstream &amp; Downstream Petroleum Fees Regulations 2024 (official gazette)</caption>
+      <thead><tr><th>Item</th><th class="mono">Fee</th></tr></thead>
+      <tbody>
+        <tr><td>Licence to Establish (LTE)</td><td class="mono">₦100,000</td></tr>
+        <tr><td>Licence to Construct (LTC)</td><td class="mono">₦200,000</td></tr>
+        <tr><td>Licence to Operate — new</td><td class="mono">₦100,000 / first 20,000 L + ₦50,000 per extra 20,000 L</td></tr>
+        <tr><td>Licence to Operate — renewal</td><td class="mono">₦100,000 / first 20,000 L + ₦5,000 per extra 20,000 L</td></tr>
+        <tr><td>Modification authorisation</td><td class="mono">₦300,000 per outlet</td></tr>
+        <tr><td>Tank calibration authorisation</td><td class="mono">₦10,000 per tank</td></tr>
+        <tr><td>Licence transfer</td><td class="mono">₦500,000 or 5% of deal value</td></tr>
+        <tr><td>Environmental assessment / audit / EMP</td><td class="mono">₦80,000 / ₦40,000 / ₦100,000</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="callout">
+      <p><strong>App implication:</strong> a per-station compliance calendar (licence expiry, calibration dates, fire certificate, environmental filings) is cheap to build and directly protects revenue — a lapsed licence or failed inspection means a sealed station.</p>
+    </div>
+
+    <h3>Deregulation shock</h3>
+    <ul>
+      <li><strong>29 May 2023</strong> — "subsidy is gone." Pump price roughly tripled within weeks (₦185–195 → ₦617/L by July 2023). The subsidy had cost ~$10bn in 2022.</li>
+      <li><strong>56 private import licences</strong> ended NNPC's import monopoly.</li>
+      <li>With naira depreciation, pump prices moved in a <strong>₦865–1,250/L band</strong> through 2025–26.</li>
+      <li>Deregulation is not politically irreversible: 2025 saw state-level price-cap episodes that pushed retail margins below breakeven for weeks. <span class="flag">[single-source]</span></li>
+    </ul>
+
+    <h3>The Dangote factor</h3>
+    <ul>
+      <li>The 650,000 bpd refinery (petrol from Sept 2024) now dominates supply, with two price channels — <strong>coastal</strong> (marine to depots) vs <strong>gantry</strong> (truck loading at the refinery). The Dangote-vs-import cost advantage <strong>flipped at least four times in nine months</strong>.</li>
+      <li><strong>Free direct delivery to registered stations</strong> is disintermediating depots — and triggered the Sept 2025 NUPENG strike that shut stations nationwide.</li>
+      <li><strong>Concentration risk:</strong> when Dangote suspended gantry loading (Mar 2026), depot prices spiked toward ₦1,400/L and many marketers simply could not load.</li>
+    </ul>
+    <div class="callout">
+      <p><strong>App implication:</strong> cost price changes per truckload, not per quarter. The app must record each delivery's actual unit cost and broadcast pump-price changes to all stations instantly — margin per litre is a daily-moving number worth first-class dashboard treatment.</p>
+    </div>
+
+    <h3>Who the owner deals with</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Body</th><th>Who they are</th><th>Why it matters</th></tr></thead>
+      <tbody>
+        <tr><td><strong>MEMAN</strong></td><td>6 major marketers (~⅓ of market)</td><td>Publishes the Energy Bulletin price benchmarks</td></tr>
+        <tr><td><strong>IPMAN</strong></td><td>Independent marketers (~60% of stations)</td><td>The association most independent owners belong to; direct Dangote purchase deals</td></tr>
+        <tr><td><strong>PETROAN</strong></td><td>Retail outlet owners</td><td>Lobbies on price stability and support grants</td></tr>
+        <tr><td><strong>NUPENG</strong></td><td>Tanker drivers / station workers' union</td><td>Strikes shut stations nationwide (Sept 2025)</td></tr>
+        <tr><td><strong>Weights &amp; Measures</strong></td><td>Federal legal metrology dept.</td><td>Seals under-dispensing pumps — separate from NMDPRA</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Station economics</h3>
+    <div class="cards">
+      <div class="card"><h4>Margins</h4><p>Fuel gross margin ~<span class="num">8–12%</span>; observable ex-depot-to-pump spreads roughly <span class="num">₦30–80/L</span>. Non-fuel retail (shop, lubricants, LPG) earns 20–25%. Even ₦10–20/L price differences move traffic between stations.</p></div>
+      <div class="card"><h4>Throughput</h4><p>Lagos <span class="num">40–50k L/month</span> per station (saturated market) vs <span class="num">80–100k L/month</span> in Abuja / Port Harcourt. <span class="flag">[market-research estimates]</span></p></div>
+      <div class="card"><h4>Working capital</h4><p>Depots demand payment upfront; retailers now hold <span class="num">7–10 days</span> of inventory (vs 3–5 global norm). A truckload bought at the wrong moment can be unprofitable end-to-end.</p></div>
+    </div>
+    <div class="callout green">
+      <p><strong>The four numbers that are the business</strong> — per station, per day: litres sold by product · gross margin per litre (pump price − delivered unit cost) · cash position · days of stock remaining. That is the owner dashboard.</p>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ============ OPERATIONS ============ -->
+<section id="operations">
+  <div class="wrap">
+    <div class="sec-kicker">02 · Station Operations</div>
+    <h2>How a Nigerian filling station runs day to day</h2>
+    <p class="lede">The operational playbook the app digitizes — assembled from Nigerian job ads, practitioner audit checklists, vendor training curricula, and a national newspaper investigation.</p>
+
+    <h3>Staff structure</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Role</th><th>Responsibility</th><th>Nigeria-specific notes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Owner</strong></td><td>Multi-station P&amp;L, pricing, supply</td><td>Often off-site; the app's primary customer</td></tr>
+        <tr><td><strong>Station Manager</strong></td><td>Daily reconciliation, deliveries, compliance, staff</td><td>₦150k–200k+/month per 2025-26 job ads; HND/BSc + ~3 yrs experience</td></tr>
+        <tr><td><strong>Supervisor</strong></td><td>Floor control, pump checks, price briefing</td><td>Briefs staff on current prices daily — prices change often</td></tr>
+        <tr><td><strong>Cashier</strong></td><td>Collects &amp; accounts for attendants' takings</td><td>The aggregation point: "reconcile pump readings and sales figures"</td></tr>
+        <tr><td><strong>Pump Attendants</strong></td><td>Dispense <em>and</em> take payment at the pump</td><td>Full-service model — cash, POS, and transfers handled at the nozzle; SSCE minimum; very low pay (fraud-incentive context)</td></tr>
+        <tr><td><strong>Security</strong></td><td>Night guards, anti-siphoning</td><td>CCTV common; robbery risk shapes cash handling</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>The two daily controls</h3>
+    <div class="cards">
+      <div class="card"><h4>1 · Tank dip</h4><p>A calibrated dip stick lowered into each underground tank; the reading converts to litres via the tank's calibration chart. Larger operators use Automatic Tank Gauges (one Lagos vendor claims 1,000+ probes installed in Nigeria); independents mostly dip manually.</p></div>
+      <div class="card"><h4>2 · Pump totalizer</h4><p>Each nozzle's cumulative meter counter — not resettable in normal operation, which is what makes it auditable. Read at open, shift change, and close.</p></div>
+    </div>
+
+    <h3>Shift reconciliation — the core math</h3>
+    <div class="formula">
+litres_sold      = closing_meter − opening_meter        <b>· per nozzle, per attendant</b><br>
+expected_takings = litres_sold × pump_price<br>
+shortage         = (cash + POS + transfer + credit) − expected_takings
+    </div>
+    <p>The cashier aggregates attendants; the manager reconciles the day. Standard closing checklist: sales summary → cash reconciliation → digital payments → credit review → inventory reconciliation → expenses → shift report before handover. Common failure points — counting errors, delayed entries, wrong nozzle readings — are all paper-process problems the app eliminates by computing everything server-side.</p>
+
+    <h3>Wet stock management — where leaks and theft show up</h3>
+    <div class="formula">
+book_stock     = opening_stock + deliveries − metered_sales   <b>· per tank, per day</b><br>
+daily_variance = closing_dip − book_stock<br>
+cum_%_variance = cumulative_variance ÷ cumulative_sales × 100
+    </div>
+    <p><strong>Critical insight:</strong> every tank has a "normal" small persistent loss (temperature — petrol volume changes ~0.11% per °C — evaporation, meter calibration drift, delivery measurement error). The control objective is detecting a <strong>change from that normal trend</strong>, not chasing zero variance.</p>
+    <div class="callout amber">
+      <p><strong>Investigation triggers</strong> (industry wetstock guidance): variance worsens by <span class="mono">+0.1%</span> vs the tank's monthly normal · an extra <span class="mono">10 L/day</span> over a month · an extra <span class="mono">300 L/month</span>. Nigerian regulatory tolerance figures were not found in sources — the trend method stands on its own. <span class="flag">[global standard, flagged]</span></p>
+    </div>
+
+    <h3>Deliveries and restocking</h3>
+    <p>Supply chain today: pay the depot <strong>upfront</strong> → truck loads at Dangote gantry or coastal/private depot → tanker arrives with waybill. Verification procedure:</p>
+    <ol>
+      <li>Check waybill and meter tickets against the order before offloading</li>
+      <li>Check compartment seals; dip/ullage each compartment against the waybill</li>
+      <li>Dip the receiving tank <strong>before</strong> discharge</li>
+      <li>Discharge one compartment at a time</li>
+      <li>Dip again <strong>after settling (~5 min)</strong>; delivered volume = after − before</li>
+      <li>Water-paste check; note fuel temperature (warm fuel shrinks)</li>
+      <li>Sign waybill; record delivery + unit cost in the stock book</li>
+    </ol>
+
+    <h3>Cash, POS, and transfers</h3>
+    <div class="tbl"><table>
+      <caption style="text-align:left;padding:10px 14px;font-weight:600;font-family:'Exo',sans-serif">Payment mix at Nigerian fuel stations (Moniepoint "Fueling the Nation", Dec 2025)</caption>
+      <thead><tr><th>Method</th><th class="mono">Share</th><th>Operational note</th></tr></thead>
+      <tbody>
+        <tr><td>Cash</td><td class="mono">33.6%</td><td>Drop safes, counterfeit vigilance, banking runs</td></tr>
+        <tr><td>Card (POS)</td><td class="mono">27.3%</td><td>91% of stations run POS terminals; FG directive mandates acceptance</td></tr>
+        <tr><td>Bank transfer</td><td class="mono">13.6%</td><td>Confirmed at the pump by the attendant</td></tr>
+        <tr><td>Mobile money</td><td class="mono">3.6%</td><td>Growing</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>9 in 10 stations depend on same-day settlement</strong> because depots demand upfront payment — cash-flow timing is an owner-level anxiety the dashboard should surface.</p>
+
+    <h3>Products</h3>
+    <div class="pill-row">
+      <span class="pill"><strong>PMS</strong> — petrol; price changes frequently</span>
+      <span class="pill"><strong>AGO</strong> — diesel; big B2B (generators)</span>
+      <span class="pill"><strong>DPK</strong> — kerosene; declining</span>
+      <span class="pill"><strong>LPG</strong> — cooking gas; separate skid, fastest-growing</span>
+      <span class="pill"><strong>Lubricants</strong> — shop sales, higher margin</span>
+    </div>
+    <p>Each liquid product has dedicated tanks and nozzles — the data model is per-tank and per-nozzle, with products as configuration.</p>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ============ FRAUD ============ -->
+<section id="fraud">
+  <div class="wrap">
+    <div class="sec-kicker">03 · Fraud &amp; Controls</div>
+    <h2>The threat model the app defends against</h2>
+    <p class="lede">Nigerian evidence throughout. Forum anecdotes are used for threat modelling (what happens), never for prevalence statistics (how often).</p>
+
+    <h3>Attendant-level tricks — the documented inventory</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Trick</th><th>Mechanism</th><th>Who loses</th></tr></thead>
+      <tbody>
+        <tr><td><strong>No-reset / "selling on top"</strong></td><td>Dispensing continues from the previous sale's meter — the most-reported trick</td><td><span class="tag cust">Customer</span></td></tr>
+        <tr><td>Recall past sale</td><td>Digital pump shows a completed amount without fuel flowing</td><td><span class="tag cust">Customer</span></td></tr>
+        <tr><td>Distraction</td><td>Conversation — or collusion with hawkers — during dispensing</td><td><span class="tag cust">Customer</span></td></tr>
+        <tr><td>Display blocking</td><td>Hose or body blocks the meter; or a pump facing away from the queue</td><td><span class="tag cust">Customer</span></td></tr>
+        <tr><td>Power-cut wipe</td><td>Mid-dispense outage; attendant calls out an inflated figure</td><td><span class="tag cust">Customer</span></td></tr>
+        <tr><td>Systematic short-changing</td><td>Sub-₦100 amounts across dozens of vehicles daily</td><td><span class="tag cust">Customer</span></td></tr>
+        <tr><td><strong>Jerry-can side sales</strong></td><td>Off-book sales to the black market during scarcity</td><td><span class="tag owner">Owner</span></td></tr>
+        <tr><td><strong>Cash skimming</strong></td><td>Pocketing takings — surfaces as shift shortage</td><td><span class="tag owner">Owner</span></td></tr>
+      </tbody>
+    </table></div>
+    <p>Customer-side fraud still hurts the owner: NMDPRA seals stations for under-dispensing, and reputational damage moves traffic to competitors in a market where customers actively watch the meter.</p>
+
+    <h3>Manager-level fraud — the expensive tier</h3>
+    <div class="cards">
+      <div class="card">
+        <h4>Sales diversion — real case</h4>
+        <p>EFCC arrested the manager of an Emadeb Energy station over alleged diversion of <span class="num">~₦500 million</span> of his employer's sales (Oct 2025). Allegation stage, not conviction.</p>
+      </div>
+      <div class="card">
+        <h4>Diverted delivery — real case</h4>
+        <p>A Nasarawa station manager received a 40,000 L truck but discharged only <span class="num">13,300 L</span>, diverting 26,700 L to sell at scarcity prices elsewhere (NSCDC arrest, reported by Premium Times / Vanguard).</p>
+      </div>
+      <div class="card">
+        <h4>Collusion &amp; falsified records</h4>
+        <p>Nigerian auditor checklists explicitly test for altered meter readings and <strong>attendant–manager collusion</strong> to under-report sales. Falsified dips are an inferred vector — checklists demand independent dip verification for a reason.</p>
+      </div>
+    </div>
+
+    <h3>Detection: variance analysis at three levels</h3>
+    <ul>
+      <li><strong>Shift level:</strong> per-attendant shortage = takings − (litres × price). Catches skimming same-day.</li>
+      <li><strong>Tank level:</strong> daily variance = dip − book stock. Catches unrecorded sales, delivery shortfalls, leaks.</li>
+      <li><strong>Trend level:</strong> cumulative % variance per tank vs its own baseline. Separates theft/leak (persistent one-direction drift) from benign noise (temperature, meter drift). Continuous reconciliation can isolate variance to a specific dispenser.</li>
+    </ul>
+    <div class="callout red">
+      <p><strong>Regulatory survival:</strong> NMDPRA's "Operation One Litre for One Litre" seals stations outright for under-dispensing — <strong>11 stations sealed in Rivers State in one day</strong> (Feb 2026). <em>"It is either you're dispensing within the bandwidth or we shut you down."</em> A sealed station is a 100% revenue stop; calibration tracking in the app is insurance, not bureaucracy.</p>
+    </div>
+
+    <h3>The controls stack the app implements</h3>
+    <ol>
+      <li><strong>Per-shift, per-nozzle reconciliation</strong> — the atomic unit; catches skimming daily</li>
+      <li><strong>Daily tank variance + cumulative trend</strong> with per-tank baselines — alert on trend breaks, not noise</li>
+      <li><strong>Delivery verification workflow</strong> — ordered vs waybill vs per-compartment vs before/after dips, with photos. This is the control that would have caught the 26,700 L diversion.</li>
+      <li><strong>Dual/independent dips</strong> — recorded by one person, verified by another; flag divergence</li>
+      <li><strong>Separation of duties</strong> — who dispenses ≠ who counts ≠ who dips ≠ who reports</li>
+      <li><strong>Immutable records</strong> — no edits, only superseding corrections with full who/what/when history</li>
+      <li><strong>Cashless bias with offline tolerance</strong> — POS/transfer reduces skimmable cash; design for network failure</li>
+      <li><strong>Compliance dashboard</strong> — calibration due dates, licence renewals, seal status</li>
+      <li><strong>Surprise audits</strong> — owner triggers an unscheduled mid-day dip + meters + photos from his phone</li>
+    </ol>
+    <div class="callout amber">
+      <p><strong>Honesty note:</strong> the widely-quoted "30% of fuel budget lost to fraud" figure is uncited marketing — never use it in client materials. The sourced cases above are stronger evidence anyway.</p>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ============ COMPETITORS ============ -->
+<section id="competitors">
+  <div class="wrap">
+    <div class="sec-kicker">04 · Competitive Landscape</div>
+    <h2>Who else solves this — and the gap they all leave</h2>
+    <p class="lede">The market is barbell-shaped: hardware-dependent enterprise automation on one end, throwaway single-phone ledger apps on the other. The middle is nearly empty.</p>
+
+    <div class="tbl"><table>
+      <thead><tr><th>Product</th><th>What it is</th><th>Hardware?</th><th>Pricing</th><th>Key limitation</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Epump</strong> (Fuelmetrics, Lagos)</td><td>IoT pump controllers + cloud dashboards; 2,005+ stations claimed; remote price changes; clients incl. NNPC, Ardova</td><td><span class="tag owner">Required</span></td><td class="mono">Hidden, sales-led</td><td>Hardware capex per pump; closest competitor</td></tr>
+        <tr><td><strong>Smartflow</strong> (Lagos)</td><td>ATG probes ("1,000+ in Nigeria"), forecourt controllers, FuelNet/SmartEye cloud</td><td><span class="tag owner">Required</span></td><td class="mono">Hidden, enterprise</td><td>Hardware-first; software is an adjunct</td></tr>
+        <tr><td><strong>RockEye Africa</strong></td><td>Full downstream ERP (stations, depots, finance, HR); offline sync</td><td><span class="tag part">Partial</span></td><td class="mono">Hidden, demo-led</td><td>Heavyweight ERP for oil marketing companies</td></tr>
+        <tr><td><strong>Vendra</strong></td><td>SaaS POS/ERP with petrol vertical — shift cash reconciliation, supervisor dips, fleet credit</td><td><span class="tag yes">None</span></td><td class="mono">$28/$59/$99 mo (5 outlets)</td><td>Full POS: per-transaction entry, heavy; not Nigeria-branded</td></tr>
+        <tr><td><strong>Petrosoft</strong> (India)</td><td>One-off licences; separate Dealer/Manager/Pump-Boy role apps</td><td><span class="tag yes">None</span></td><td class="mono">~$200–575 one-off</td><td>India-centric compliance (GST); no Nigeria localization</td></tr>
+        <tr><td><strong>Play Store ledgers</strong></td><td>"Petrol &amp; Diesel Pump Manager", "Daily Sales Record" — offline single-phone records</td><td><span class="tag yes">None</span></td><td class="mono">Free–$5</td><td>No owner consolidation, no fuel reconciliation, weak data practices</td></tr>
+        <tr><td><strong>CStoreOffice</strong> (US)</td><td>Category gold standard: pump-to-pocket reconciliation, multi-store P&amp;L to 500+ sites</td><td><span class="tag part">POS integr.</span></td><td class="mono">Hidden</td><td>US POS/tobacco/lottery complexity — irrelevant here</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Table stakes vs differentiators</h3>
+    <div class="cards">
+      <div class="card">
+        <h4>Table stakes (every credible product)</h4>
+        <ul style="margin-bottom:0">
+          <li>Daily/shift sales by product and attendant</li>
+          <li>Tank stock + dip-vs-book variance</li>
+          <li>Cash reconciliation with discrepancy flags</li>
+          <li>Low-stock alerts · reports/export · expense log</li>
+          <li>Owner/manager roles</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Differentiators worth building</h4>
+        <ul style="margin-bottom:0">
+          <li>Variance <strong>trend</strong> analytics (theft flags)</li>
+          <li>Remote price broadcast to managers</li>
+          <li>Per-station P&amp;L and margin-per-litre</li>
+          <li>Photo/GPS-audited submissions</li>
+          <li>Delivery verification workflow</li>
+          <li>Offline-first with visible sync state</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <p><strong>Positioning: "Epump-grade visibility without the hardware."</strong> No pump controllers, no probes, no installation visit — onboard a station in an afternoon. Defensible because hardware players can't cheaply serve owners unwilling to pay capex, ledger apps can't do fuel-specific reconciliation, and full-POS products demand per-transaction entry that Nigerian forecourt reality resists. <strong>Nobody in Nigeria publishes pricing</strong> — transparent per-station Naira pricing with a free single-station tier would be unique in the market.</p>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ============ BLUEPRINT ============ -->
+<section id="blueprint">
+  <div class="wrap">
+    <div class="sec-kicker">05 · App Blueprint</div>
+    <h2>Features, data model, architecture</h2>
+    <p class="lede">Every design choice traces to evidence in the sections above.</p>
+
+    <h3>The daily loop (MVP)</h3>
+    <div class="cards">
+      <div class="card">
+        <h4>Manager submits (&lt;3 min, offline-capable)</h4>
+        <ul style="margin-bottom:0">
+          <li>Per-nozzle opening/closing totalizer readings</li>
+          <li>Per-tank opening/closing dips</li>
+          <li>Deliveries: waybill no., volume, unit cost, before/after dips</li>
+          <li>Takings split: cash / POS / transfer / credit</li>
+          <li>Expenses with categories</li>
+          <li>Required photos: meter displays, dip stick, waybill</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Server computes (never typed)</h4>
+        <ul style="margin-bottom:0">
+          <li>Litres sold per nozzle/product</li>
+          <li>Expected takings and per-shift shortage/overage</li>
+          <li>Tank variance vs book stock + cumulative trend</li>
+          <li>Margin per litre vs actual delivered cost</li>
+          <li>Days-of-stock estimates</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Owner sees</h4>
+        <ul style="margin-bottom:0">
+          <li>All-stations overview: litres, revenue, cash, variance flags</li>
+          <li>Submission status — who hasn't reported</li>
+          <li>Push alerts: shortages, variance trend breaks, low stock, missing submissions</li>
+          <li>Nightly digest: one notification, all stations, exceptions first</li>
+          <li>Price broadcast with manager acknowledgement</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Alert rules (initial, all configurable)</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Rule</th><th>Trigger</th></tr></thead>
+      <tbody>
+        <tr><td>Missing submission</td><td class="mono">Not in by 21:30 WAT → nag manager · 22:30 → alert owner</td></tr>
+        <tr><td>Cash shortage</td><td class="mono">Shortage &gt; X% of expected or &gt; ₦Y absolute</td></tr>
+        <tr><td>Tank variance</td><td class="mono">Daily &gt; 0.5% throughput → note · trend break vs baseline → alert</td></tr>
+        <tr><td>Delivery mismatch</td><td class="mono">Measured vs waybill gap &gt; Z litres → immediate alert</td></tr>
+        <tr><td>Low stock</td><td class="mono">Days-of-stock &lt; N days</td></tr>
+        <tr><td>Anomaly</td><td class="mono">Submission GPS far from station · device vs server clock mismatch</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Data integrity layer — what makes manual figures trustworthy</h3>
+    <ol>
+      <li><strong>Append-only:</strong> managers get INSERT-only access; corrections are new rows referencing the original — the owner always sees who changed what, when</li>
+      <li><strong>Photo evidence:</strong> in-app camera only (no gallery uploads) for meters, dip stick, waybills</li>
+      <li><strong>Server time authoritative;</strong> device time recorded but never trusted</li>
+      <li><strong>GPS at capture;</strong> flag submissions far from the station's coordinates</li>
+      <li><strong>Server-side math:</strong> the manager never types litres-sold, expected cash, or variance</li>
+      <li><strong>Cross-checks:</strong> today's opening meter must equal yesterday's closing per nozzle — breaks flag missed or faked readings</li>
+    </ol>
+
+    <h3>Architecture</h3>
+    <div class="cards">
+      <div class="card">
+        <h4>Stack</h4>
+        <p><strong>Expo / React Native + Supabase.</strong> JS-skilled teams onboard fastest on RN; Expo gives over-the-air updates (users won't update store apps); Supabase provides Postgres + row-level security + pg_cron + Edge Functions — one coherent story for relational, role-gated, report-heavy data. Flutter + Firebase is a legitimate alternative for a Dart-first team.</p>
+      </div>
+      <div class="card">
+        <h4>Offline-first (non-negotiable)</h4>
+        <p>Local SQLite as on-device source of truth · write-ahead submission queue with idempotency keys · background drain with exponential backoff · visible <span class="mono">pending / syncing / synced</span> state per submission. Conflict story is deliberately trivial: one manager per station per day, server uniqueness on (station, date).</p>
+      </div>
+      <div class="card">
+        <h4>Roles &amp; multi-tenancy</h4>
+        <p><span class="mono">organizations → stations → memberships (role)</span>. Row-level security on every table; managers INSERT-only on their own station; owner reads everything in the org; service role runs the nightly digest crons. Multi-tenant from day one — the client's stations become tenant #1 if this becomes a product.</p>
+      </div>
+    </div>
+
+    <h3>Build roadmap</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Phase</th><th>Scope</th><th>Outcome</th></tr></thead>
+      <tbody>
+        <tr><td class="mono"><strong>1 · MVP</strong><br>4–6 wks</td><td>Daily form + offline queue, owner dashboard, digests, price broadcast, roles/audit trail</td><td>Client's stations live; daily numbers trustworthy</td></tr>
+        <tr><td class="mono"><strong>2 · Controls</strong><br>3–4 wks</td><td>Shift-level entry, delivery verification, compliance calendar, exports, read-only consultant role</td><td>Fraud-detection loop closed</td></tr>
+        <tr><td class="mono"><strong>3 · Intelligence</strong><br>ongoing</td><td>Per-tank variance baselines &amp; trend alerts, margin analytics, surprise audits, POS settlement reconciliation</td><td>The moat: data no one else has without hardware</td></tr>
+      </tbody>
+    </table></div>
+
+    <blockquote><strong>Demo-day script:</strong> open the app at 9pm → all stations green except one → tap it → tank 2 variance trending −0.4% for 9 days → tap the dip photo → call the manager. <em>That is the product.</em></blockquote>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ============ RISKS ============ -->
+<section id="risks">
+  <div class="wrap">
+    <div class="sec-kicker">06 · Risks &amp; Open Questions</div>
+    <h2>What could make this fail — honestly stated</h2>
+    <p class="lede">Contrarian views first, then the questions to settle with the client before writing code.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h4>Garbage in, garbage out</h4>
+        <p>The app's value rests on figures typed by the people it monitors. A colluding manager can fabricate a self-consistent day. Photos, GPS, meter-continuity checks, and variance trends raise the cost of lying substantially — a fake day must stay consistent with yesterday's photos and the tank's physical trend — but only hardware removes trust entirely. <strong>Position honestly: the app makes theft hard and visible, not impossible.</strong></p>
+      </div>
+      <div class="card">
+        <h4>Adoption failure</h4>
+        <p>Managers may see the app as surveillance; the category's top complaint elsewhere is staff simply not entering data. Counters: genuinely &lt;3-minute submission, value <em>for the manager</em> (own records, protection against false accusation, price updates), owner-side nags — and the employer's authority. Validate daily compliance in week one of the pilot; it is the #1 risk.</p>
+      </div>
+      <div class="card">
+        <h4>Market volatility as product risk</h4>
+        <p>Margins are politically exposed (2025 price-cap episodes squeezed retailers below breakeven for weeks). If stations struggle, subscriptions are early casualties. Price the app against leakage recovered, not against margin.</p>
+      </div>
+      <div class="card">
+        <h4>Competitor response</h4>
+        <p>Epump could ship a hardware-free tier; Vendra could localize for Nigeria. The window is real but not permanent — speed to a working pilot with the client's own stations matters more than feature completeness.</p>
+      </div>
+    </div>
+
+    <h3>17 questions for the client before build</h3>
+    <div class="qgrid">
+      <div class="card">
+        <h4>Operations</h4>
+        <ol style="margin-bottom:0">
+          <li>How many stations today — and the 2–3 year ambition?</li>
+          <li>Which products per station (PMS/AGO/DPK/LPG/lubricants)?</li>
+          <li>Current daily process — paper book, WhatsApp photos, Excel?</li>
+          <li>Shift pattern per station (2×12h, 3×8h, 24h)?</li>
+          <li>Who dips tanks and who records meters today?</li>
+          <li>Any credit customers (fleets, businesses)? Volume, terms?</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h4>Fraud &amp; controls</h4>
+        <ol start="7" style="margin-bottom:0">
+          <li>What losses has he actually experienced or suspects?</li>
+          <li>Any station with ATG probes or automation already?</li>
+          <li>Should managers see variance thresholds, or is alerting owner-only?</li>
+        </ol>
+        <h4 style="margin-top:18px">Money &amp; payments</h4>
+        <ol start="10" style="margin-bottom:0">
+          <li>POS providers per station? Settlement-timing pain?</li>
+          <li>How is cash banked today, and how often?</li>
+          <li>Supply sources (Dangote direct, depots, IPMAN bulk)? Delivery-cost tracking in MVP?</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h4>People &amp; devices</h4>
+        <ol start="13" style="margin-bottom:0">
+          <li>Managers' phones — Android versions, data plans?</li>
+          <li>App comfort/literacy — need for Pidgin/Hausa/Yoruba/Igbo UI later?</li>
+          <li>Who else needs read access (accountant, consultant, partners)?</li>
+        </ol>
+        <h4 style="margin-top:18px">Commercial</h4>
+        <ol start="16" style="margin-bottom:0">
+          <li>Bespoke build, or open to it becoming a product (his stations as first tenant)?</li>
+          <li>Budget/timeline expectations; who carries hosting costs?</li>
+        </ol>
+      </div>
+    </div>
+
+    <h3>Research gaps (not verified)</h3>
+    <ul>
+      <li>Nigerian regulatory wet-stock loss tolerance and NMDPRA dispensing "bandwidth" figures</li>
+      <li>Shift-pattern and headcount norms per station size</li>
+      <li>Banking cadence / float management norms</li>
+      <li>Moniepoint/OPay public developer APIs (appear thin vs Paystack)</li>
+      <li>Full text of the Midstream &amp; Downstream Petroleum Operations Regulations 2025</li>
+    </ul>
+  </div>
+</section>
+<hr class="divider">
+
+<!-- ============ SOURCES ============ -->
+<section id="sources">
+  <div class="wrap">
+    <div class="sec-kicker">Annex</div>
+    <h2>Sources &amp; methodology</h2>
+    <p class="lede">Five parallel research tracks (regulation · operations · fraud · competitors · architecture), 45+ scraped sources. Every claim in the full research annexes carries a source URL and a quality note; uncertainty is flagged inline.</p>
+    <div class="cards">
+      <div class="card">
+        <h4>Strongest sources</h4>
+        <ul style="margin-bottom:0">
+          <li>Official: PIA 2021, Fees Regulations 2024 gazette, NMDPRA portal, IMF analysis</li>
+          <li>News: Reuters, Punch, Premium Times, Vanguard, Guardian, BusinessDay, Channels</li>
+          <li>Technical: EPA-aligned wetstock reconciliation guidance, Google offline-first architecture docs, Supabase first-party docs</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Used with care</h4>
+        <ul style="margin-bottom:0">
+          <li>Vendor claims (Epump, Smartflow, Moniepoint) — feature evidence, not neutral stats</li>
+          <li>Market research (Mordor) — single-source point estimates</li>
+          <li>Forum anecdotes (Nairaland) — threat modelling only, never prevalence</li>
+        </ul>
+      </div>
+    </div>
+    <p>Full per-claim citations: <a href="https://github.com/mosesdex/filling-station-management-research/tree/main/research">research annexes on GitHub</a> · report documents: <a href="https://github.com/mosesdex/filling-station-management-research/tree/main/docs">docs/</a></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong style="color:#E2E8F0;font-family:'Exo',sans-serif">Filling Station Management Research</strong> — Nigeria · August 2026</p>
+    <p style="margin-top:8px">Repository: <a href="https://github.com/mosesdex/filling-station-management-research">github.com/mosesdex/filling-station-management-research</a></p>
+    <p style="margin-top:8px">Prices and market figures are dated snapshots in a volatile market; verify load-bearing numbers before commercial use.</p>
+  </div>
+</footer>
+
+</body>
+</html>
